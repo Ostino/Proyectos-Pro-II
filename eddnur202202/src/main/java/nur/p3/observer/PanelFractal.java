@@ -6,9 +6,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class PanelFractal extends JPanel implements PropertyChangeListener {
-    private int ancho = 800;
+    private int ancho = 600;
 
-    private int alto = 600;
+    private int alto = 400;
 
     private static final long serialVersionUID = 1L;
 

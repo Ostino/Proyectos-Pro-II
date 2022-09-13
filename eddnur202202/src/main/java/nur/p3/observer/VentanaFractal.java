@@ -59,8 +59,7 @@ public class VentanaFractal extends JFrame {
         // PanelDibujo
         panel = new PanelFractal(modelo);
         getContentPane().add(panel);
-
-            }
+    }
 
     public void cmd_vonkoch() {
         System.out.println("Escogio Von Koch");

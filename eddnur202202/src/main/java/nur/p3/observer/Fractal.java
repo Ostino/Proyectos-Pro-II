@@ -1,20 +1,13 @@
 package nur.p3.observer;
 
-import nur.p3.logs.TestLogs;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import  java.util.Random;
-
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Random;
 
 public class Fractal implements IDibujo {
-    private static final Logger logger = LogManager.getLogger(TestLogs.class);
     public static final int VONKOCH = 1;
     public static final int SIERPINSKY = 2;
-    Random random = new Random();
+
     protected int profundidad;
     protected String nombre;
     protected int tipo;
@@ -73,38 +66,40 @@ public class Fractal implements IDibujo {
 
     public void dibujar(Graphics g) {
         if(tipo == SIERPINSKY) {
-            hacerSierpinsky(300, 200, 200, 200, this.profundidad, g);
+            hacerSierpinsky(10, 10, 300, 300, this.profundidad, g);
         }
         if (tipo == VONKOCH) {
             hacerVonKoch(10, 150, 400, 150, this.profundidad, g);
         }
     }
 
-    public void hacerSierpinsky(int x1, int y1, int ancho, int alto, int n, Graphics gc) {
-
-        int pAncho = ancho ;
-        int pAlto = alto ;
-        int XX = x1 ;
-        int YY = y1 ;
-
+    public void hacerSierpinsky(int x1, int y1, int ancho, int alto, int n,
+                                Graphics gc) {
+        int pAncho = ancho / 3;
+        int pAlto = alto / 3;
         if (n == 1) {
-            gc.setColor(new Color(random.nextInt(255), 230, random.nextInt(255)));
             gc.drawRect(x1, y1, ancho, alto);
-            gc.fillRect(x1, y1, ancho, alto);
-        } else {
-            hacerSierpinsky(XX, YY, pAncho, pAlto, n - 1, gc);
-            logger.debug("Altura : " + pAlto + " Anchura : " + pAncho + " Cord X: " + XX + " Cord Y :" + YY + "  DESPUES cuadrado base");
-            hacerSierpinsky(XX - (pAncho / 2), YY + (pAlto / 4), pAncho / 2, pAlto / 2, n - 1, gc);//Izq
-            logger.debug("Altura : " + pAlto + " Anchura : " + pAncho + " Cord X: " + XX + " Cord Y :" + YY + "  DESPUES 1 CUBO");
-            hacerSierpinsky(XX + (pAncho / 4), YY - (pAlto / 2), pAncho / 2, pAlto / 2, n - 1, gc); //Arriba
-            logger.debug("Altura : " + pAlto + " Anchura : " + pAncho + " Cord X: " + XX + " Cord Y :" + YY + "  DESPUES 2 CUBO");
-            hacerSierpinsky(XX + pAncho, YY + (pAlto / 4), pAncho / 2, pAlto / 2, n - 1, gc);//Derecha
-            logger.debug("Altura : " + pAlto + " Anchura : " + pAncho + " Cord X: " + XX + " Cord Y :" + YY + "  DESPUES 3 CUBO");
-            hacerSierpinsky(XX + (pAncho / 4), YY + pAlto, pAncho / 2, pAlto / 2, n - 1, gc);//Abajo
-            logger.debug("Altura : " + pAlto + " Anchura : " + pAncho + " Cord X: " + XX + " Cord Y :" + YY + "  DESPUES 4 CUBO");
-        }
+            gc.drawRect(x1 + pAncho, y1 + pAlto, pAncho, pAlto);
+        } // end of if (n == 1)
+        else {
+            /**
+             * ****************** 1 * 2 * 3 *
+             * ****************** 4 *   * 5 *
+             * ****************** 6 * 7 * 8 * **************
+             */
+            hacerSierpinsky(x1, y1, pAncho, pAlto, n - 1, gc);
+            hacerSierpinsky(x1 + pAncho, y1, pAncho, pAlto, n - 1, gc);
+            hacerSierpinsky(x1 + 2 * pAncho, y1, pAncho, pAlto, n - 1, gc);
+            hacerSierpinsky(x1, y1 + pAlto, pAncho, pAlto, n - 1, gc); // 4
+            hacerSierpinsky(x1 + 2 * pAncho, y1 + pAlto, pAncho, pAlto, n - 1, gc); // 5
+            hacerSierpinsky(x1, y1 + 2 * pAlto, pAncho, pAlto, n - 1, gc); // 6
+            hacerSierpinsky(x1 + pAncho, y1 + 2 * pAlto, pAncho, pAlto, n - 1, gc); // 7
+            hacerSierpinsky(x1 + 2 * pAncho, y1 + 2 * pAlto, pAncho, pAlto,	n - 1, gc); // 8
+        } // end of else
+
     }
-   public void hacerVonKoch(int x0, int y0, int x3, int y3, int n, Graphics gc) {
+
+    public void hacerVonKoch(int x0, int y0, int x3, int y3, int n, Graphics gc) {
         if (n == 1) {
             gc.drawLine(x0, y0, x3, y3);
         } else {

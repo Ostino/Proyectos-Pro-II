@@ -1,6 +1,5 @@
-package nur.p3.imagenes.modelo;
+package nur.p3.mandelbrot.objetos;
 
-import nur.p3.imagenes.serviicios.IDibujable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 
-public class Imagen implements IDibujable {
+public class Imagen {
     private int ancho;
     private int alto;
 
@@ -27,7 +26,7 @@ public class Imagen implements IDibujable {
         observado = new PropertyChangeSupport(this);
     }
 
-    public Imagen(Imagen img) {
+    public Imagen(nur.p3.imagenes.modelo.Imagen img) {
         ancho = img.getAncho();
         alto = img.getAlto();
 
@@ -90,9 +89,7 @@ public class Imagen implements IDibujable {
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(archivoConImagen);
-        }
-        catch(Exception q)
-        {
+        } catch (Exception q) {
             logger.error("No pudo cargar la imagen", q);
             return;
         }
